@@ -572,6 +572,15 @@
       </div>
     </section>
 
+
+    <section class="section public-orders-section" id="completed-orders">
+      <div class="section-heading">
+        <div><span class="eyebrow">VERIFIED PURCHASE LOG</span><h2>Recently approved orders</h2></div>
+        <p>Public confirmations posted after a UFK admin approves a purchase.</p>
+      </div>
+      <div class="public-order-log" id="public-order-log"><div class="public-order-empty">Loading approved orders…</div></div>
+    </section>
+
     <section class="cta">
       <img src="assets/images/ufk-brand-background.png" alt="UFK Undisputed Fight Kit">
       <div><span class="eyebrow">READY TO ORDER?</span><h2>Join the UFK Discord</h2><p>Buy kits and robes directly from the official server.</p></div>
@@ -617,7 +626,7 @@
       <section class="account-auth-view" id="account-auth-view">
         <span class="eyebrow">UFK CLIENT AREA</span>
         <h2 id="account-modal-title">Your kits. Your history.</h2>
-        <p>Create a client login or sign in to view paid checkouts and free downloads saved on this device.</p>
+        <p>Create a client login or sign in to view purchases, downloads, and live support from any device.</p>
 
         <div class="account-tabs" role="tablist" aria-label="Client login options">
           <button class="account-tab is-active" id="login-tab" type="button" role="tab" aria-selected="true">Log In</button>
@@ -632,6 +641,10 @@
           <label>
             Password
             <input id="login-password" type="password" autocomplete="current-password" required placeholder="Enter password">
+          </label>
+          <label class="remember-me-row">
+            <input id="login-remember" type="checkbox" checked>
+            <span>Remember me on this device</span>
           </label>
           <button class="button primary" type="submit">Enter Client Area</button>
         </form>
@@ -652,7 +665,7 @@
           <button class="button primary" type="submit">Create Client Account</button>
         </form>
 
-        <p class="account-local-note">This simple client area stores login details and order history only in this browser.</p>
+        <p class="account-local-note">Your account, order history, and support messages are securely stored in the shared UFK database.</p>
       </section>
 
 
@@ -668,7 +681,11 @@
           </label>
           <label>
             Admin password
-            <input id="admin-login-password" type="password" required placeholder="Enter admin password">
+            <input id="admin-login-password" type="password" autocomplete="current-password" required placeholder="Enter admin password">
+          </label>
+          <label class="remember-me-row">
+            <input id="admin-login-remember" type="checkbox" checked>
+            <span>Keep this admin signed in</span>
           </label>
           <button class="button primary" type="submit">Open Admin Dashboard</button>
           <button class="button secondary" id="admin-back-to-client" type="button">Back to Client Login</button>
@@ -695,6 +712,21 @@
           <article><span>TOTAL ORDERS</span><strong id="admin-order-count">0</strong></article>
           <article><span>ORDER VALUE</span><strong id="admin-order-total">$0</strong></article>
         </div>
+
+
+        <section class="support-panel admin-support-panel">
+          <div class="support-panel-heading"><div><span class="eyebrow">LIVE SUPPORT</span><h3>Client conversations</h3></div><span class="support-live-badge">LIVE</span></div>
+          <div class="admin-support-layout">
+            <div class="support-thread-list" id="admin-support-threads"></div>
+            <div class="support-conversation">
+              <div class="support-messages" id="admin-support-messages"><div class="support-empty">Select a client conversation.</div></div>
+              <form class="support-compose" id="admin-support-form">
+                <textarea id="admin-support-input" maxlength="2000" placeholder="Reply to the client…" required></textarea>
+                <button class="button primary" type="submit">Send reply</button>
+              </form>
+            </div>
+          </div>
+        </section>
 
         <div class="admin-clients" id="admin-clients"></div>
       </section>
@@ -733,9 +765,36 @@
         </div>
 
         <div class="account-orders" id="account-orders"></div>
+
+
       </section>
     </div>
   </div>
+
+  <aside class="support-chat-widget is-hidden" id="support-chat-widget" aria-label="UFK live support">
+    <button class="support-chat-launcher" id="support-chat-launcher" type="button" aria-expanded="false" aria-controls="support-chat-window">
+      <span class="support-chat-icon" aria-hidden="true">💬</span>
+      <span class="support-chat-launcher-label">Live support</span>
+      <span class="support-chat-unread is-hidden" id="support-chat-unread">0</span>
+    </button>
+    <section class="support-chat-window" id="support-chat-window" aria-hidden="true">
+      <header class="support-chat-header">
+        <div>
+          <span class="eyebrow">UFK LIVE SUPPORT</span>
+          <strong>Chat with the admins</strong>
+          <small><i></i> Messages are saved to your account</small>
+        </div>
+        <button id="support-chat-close" type="button" aria-label="Minimise support chat">−</button>
+      </header>
+      <div class="support-messages support-chat-messages" id="client-support-messages">
+        <div class="support-empty">Start a conversation about a kit, payment, or delivery.</div>
+      </div>
+      <form class="support-compose support-chat-compose" id="client-support-form">
+        <textarea id="client-support-input" maxlength="2000" rows="2" placeholder="Tell us what kit you want…" required></textarea>
+        <button class="button primary" type="submit">Send</button>
+      </form>
+    </section>
+  </aside>
 
   <div class="payment-modal" id="payment-modal" aria-hidden="true">
     <div class="payment-modal-backdrop" data-close-payment></div>
@@ -750,11 +809,28 @@
         <li>Open a support ticket.</li>
         <li>Attach your Stripe receipt and include the item name.</li>
       </ol>
-      <div class="payment-modal-actions">
+      <div class="payment-modal-actions" id="payment-choice-actions">
         <a class="button primary" id="continue-to-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Continue to Stripe</a>
+        <button class="button secondary" id="other-payment-button" type="button">Paid another way?</button>
         <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
       </div>
-      <p class="modal-note">Delivery is handled through Discord after payment verification.</p>
+      <section class="other-payment-confirm is-hidden" id="other-payment-confirm">
+        <strong>Have you already paid using another payment method?</strong>
+        <p>This sends a purchase request to the UFK admins. Only click yes after completing your payment.</p>
+        <label class="other-payment-method-label" for="other-payment-method">Payment method</label>
+        <select id="other-payment-method">
+          <option>PayPal</option><option>Cash App</option><option>Bank transfer</option><option>Crypto</option><option>Discord payment</option><option>Other</option>
+        </select>
+        <div class="payment-modal-actions">
+          <button class="button primary" id="confirm-other-payment" type="button">Yes, send for approval</button>
+          <button class="button secondary" id="cancel-other-payment" type="button">No, go back</button>
+        </div>
+      </section>
+      <section class="payment-waiting is-hidden" id="payment-waiting" aria-live="polite">
+        <span class="payment-waiting-dot"></span>
+        <div><strong>Waiting for admin approval</strong><p>Your request has been sent to the admin portal and your live-support chat. You will see a message here when an admin approves it.</p></div>
+      </section>
+      <p class="modal-note">Stripe orders and other payment methods are verified by a UFK admin before delivery.</p>
     </div>
   </div>
 

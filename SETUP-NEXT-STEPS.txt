@@ -1,28 +1,36 @@
-UFK SUPABASE FINAL SETUP
+UFK LIVE SUPPORT + ADMIN UPGRADE
 
-Your website has already been connected to:
-https://hxfsrsjjmicbjptzvocj.supabase.co
+1. Open Supabase > SQL Editor.
+2. Paste and run the entire SUPABASE-SETUP.sql file.
+   It is designed to upgrade the database you already have.
+3. Upload every website file from this folder into your GitHub repository.
+4. In GitHub Desktop, commit and push the changes.
+5. Wait for GitHub Pages to redeploy, then hard-refresh the website (Ctrl+F5).
 
-1. Open your Supabase project.
-2. Go to SQL Editor.
-3. Open SUPABASE-SETUP.sql from this ZIP.
-4. Paste the whole file into SQL Editor and press Run.
-5. In Authentication > Providers > Email, make sure Email is enabled.
-6. Upload the website to GitHub Pages.
-7. Register your own account through the UFK website.
-8. Return to SQL Editor and run:
+NEW FEATURES
+- Private live chat between each signed-in client and UFK admins.
+- Admin support inbox with every client conversation.
+- Manual purchase override for PayPal, Cash App, bank transfer, Discord payments, gifts, or other methods.
+- Manual purchases are stored in the customer's shared account.
+- Admin can approve/publish purchases to a public completed-order log.
+- Public log displays “Admin approved this purchase” without exposing customer emails.
+- Better admin controls for statuses, account revocation, deliveries, payment method, and manual orders.
 
-   update public.profiles
-   set role = 'admin'
-   where email = 'YOUR-REAL-EMAIL@example.com';
+IMPORTANT
+- Run the SQL before testing the new website features.
+- Keep your current admin account; the upgrade does not remove it.
+- Do not upload a ZIP file into the repo. Extract it and copy the files/folders themselves.
 
-9. Replace the email above with the exact email you registered.
-10. Log out of the UFK website, then use the Admin button with that same email and password.
+POPUP CHAT + REMEMBER ME UPDATE
+- Customer support now appears as a floating popup in the bottom-right after login.
+- Admin replies remain inside the Admin Dashboard support inbox.
+- Supabase sessions are stored in localStorage and automatically refreshed, so users and admins remain signed in across page reloads and browser restarts until they press Log Out.
 
-After this, accounts and orders from all visitors are stored centrally and will appear in your admin dashboard from any device.
-
-IMPORTANT:
-- Never put a Supabase secret key or service-role key in the website.
-- The publishable key included in the website is intended for browser use.
-- Discord webhook URLs are currently present in browser JavaScript. For stronger security and reliability, move them into a Supabase Edge Function later.
-- Stripe orders are currently recorded when checkout opens. A Stripe webhook is needed to confirm successful payment automatically.
+LATEST UPDATE: OTHER PAYMENT APPROVAL + POPUP CHAT
+- The live-support launcher is always visible in the bottom-left.
+- Guests are prompted to log in; clients open chat; admins open the support inbox.
+- Checkout now includes "Paid another way?" and a required Yes confirmation.
+- Requests enter "Waiting for admin approval" and are sent to the admin portal/chat.
+- Admins can click "Approve this purchase". Approval is saved to the client account,
+  sent back through chat, and published in the public approval log with a direct link.
+- The existing SUPABASE-SETUP.sql already contains the required tables and policies.
