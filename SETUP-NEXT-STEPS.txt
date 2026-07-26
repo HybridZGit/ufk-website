@@ -34,3 +34,7 @@ LATEST UPDATE: OTHER PAYMENT APPROVAL + POPUP CHAT
 - Admins can click "Approve this purchase". Approval is saved to the client account,
   sent back through chat, and published in the public approval log with a direct link.
 - The existing SUPABASE-SETUP.sql already contains the required tables and policies.
+
+
+STORE CREDIT UPDATE:
+Run SUPABASE-SETUP.sql again in Supabase SQL Editor. It is safe to rerun and adds balances, top-up requests, transaction history, and secure atomic store-credit checkout.

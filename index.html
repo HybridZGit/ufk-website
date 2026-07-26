@@ -28,6 +28,7 @@
       <a href="#posters">Posters</a>
       <a href="#reviews">Reviews</a>
       <a href="#how">How it works</a>
+      <button class="nav-balance" id="nav-credit-balance" type="button" aria-label="Open account balance"><span>Balance</span><strong>$0.00</strong></button>
       <button class="nav-account" id="account-nav-button" type="button">My Account</button>
       <button class="nav-admin" id="admin-nav-button" type="button">Admin</button>
       <a class="nav-pay js-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Pay Now</a>
@@ -714,6 +715,11 @@
         </div>
 
 
+        <section class="admin-credit-panel">
+          <div class="support-panel-heading"><div><span class="eyebrow">STORE CREDIT</span><h3>Top-up requests</h3></div><span class="support-live-badge">ADMIN</span></div>
+          <div id="admin-topup-requests" class="admin-topup-requests"><div class="support-empty">Loading requests…</div></div>
+        </section>
+
         <section class="support-panel admin-support-panel">
           <div class="support-panel-heading"><div><span class="eyebrow">LIVE SUPPORT</span><h3>Client conversations</h3></div><span class="support-live-badge">LIVE</span></div>
           <div class="admin-support-layout">
@@ -751,10 +757,25 @@
             <strong id="account-order-total">$0</strong>
           </article>
           <article>
-            <span>DELIVERY</span>
-            <strong>Via Discord</strong>
+            <span>ACCOUNT BALANCE</span>
+            <strong id="account-credit-balance">$0.00</strong>
           </article>
         </div>
+
+        <section class="credit-topup-panel">
+          <div>
+            <span class="eyebrow">STORE CREDIT</span>
+            <h3>Top up your balance</h3>
+            <p>Pay through PayPal or another method, then submit the details. An admin will add the credit after verifying payment.</p>
+          </div>
+          <form id="credit-topup-form" class="credit-topup-form">
+            <input id="credit-topup-amount" type="number" min="1" step="0.01" required placeholder="Amount (USD)">
+            <select id="credit-topup-method"><option>PayPal</option><option>Cash App</option><option>Bank transfer</option><option>Crypto</option><option>Discord payment</option><option>Other</option></select>
+            <input id="credit-topup-reference" maxlength="200" placeholder="Payment reference / note">
+            <button class="button primary" type="submit">Submit top-up request</button>
+          </form>
+          <div id="credit-topup-status" class="credit-topup-status"></div>
+        </section>
 
         <div class="account-orders-heading">
           <div>
@@ -811,6 +832,7 @@
       </ol>
       <div class="payment-modal-actions" id="payment-choice-actions">
         <a class="button primary" id="continue-to-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Continue to Stripe</a>
+        <button class="button primary credit-pay-button" id="pay-with-credit-button" type="button">Pay with store credit <span id="checkout-credit-balance">$0.00</span></button>
         <button class="button secondary" id="other-payment-button" type="button">Paid another way?</button>
         <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
       </div>
@@ -826,11 +848,12 @@
           <button class="button secondary" id="cancel-other-payment" type="button">No, go back</button>
         </div>
       </section>
+      <section class="credit-payment-result is-hidden" id="credit-payment-result" aria-live="polite"></section>
       <section class="payment-waiting is-hidden" id="payment-waiting" aria-live="polite">
         <span class="payment-waiting-dot"></span>
         <div><strong>Waiting for admin approval</strong><p>Your request has been sent to the admin portal and your live-support chat. You will see a message here when an admin approves it.</p></div>
       </section>
-      <p class="modal-note">Stripe orders and other payment methods are verified by a UFK admin before delivery.</p>
+      <p class="modal-note">Store-credit purchases are approved instantly when your balance is sufficient. Other payment methods are verified by a UFK admin.</p>
     </div>
   </div>
 

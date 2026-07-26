@@ -184,6 +184,10 @@ function openPaymentModal(itemName, price = "") {
   paymentItemName.textContent = price ? `${currentCheckoutItem.item} (${price})` : currentCheckoutItem.item;
   continueToStripe.href = SITE_CONFIG.stripeUrl;
   paymentChoiceActions?.classList.remove("is-hidden");
+  creditPaymentResult?.classList.add("is-hidden");
+  loadCurrentProfile().then(() => {
+    if (checkoutCreditBalance) checkoutCreditBalance.textContent = moneyFromCents(currentProfile?.store_credit_cents || 0);
+  });
   otherPaymentConfirm?.classList.add("is-hidden");
   paymentWaiting?.classList.add("is-hidden");
   paymentModal.classList.add("is-open");
@@ -259,6 +263,7 @@ const accountModal = document.querySelector("#account-modal");
 const accountAuthView = document.querySelector("#account-auth-view");
 const accountDashboard = document.querySelector("#account-dashboard");
 const accountNavButton = document.querySelector("#account-nav-button");
+const navCreditBalance = document.querySelector("#nav-credit-balance");
 const loginTab = document.querySelector("#login-tab");
 const registerTab = document.querySelector("#register-tab");
 const loginForm = document.querySelector("#login-form");
@@ -281,6 +286,13 @@ const supportChatLauncher = document.querySelector("#support-chat-launcher");
 const supportChatWindow = document.querySelector("#support-chat-window");
 const supportChatClose = document.querySelector("#support-chat-close");
 const supportChatUnread = document.querySelector("#support-chat-unread");
+const accountCreditBalance = document.querySelector("#account-credit-balance");
+const checkoutCreditBalance = document.querySelector("#checkout-credit-balance");
+const payWithCreditButton = document.querySelector("#pay-with-credit-button");
+const creditPaymentResult = document.querySelector("#credit-payment-result");
+const creditTopupForm = document.querySelector("#credit-topup-form");
+const creditTopupStatus = document.querySelector("#credit-topup-status");
+const adminTopupRequests = document.querySelector("#admin-topup-requests");
 
 let currentUser = null;
 let currentProfile = null;
@@ -306,6 +318,8 @@ function parseMoney(value) {
   const amount = Number(String(value || "").replace(/[^0-9.]/g, ""));
   return Number.isFinite(amount) ? amount : 0;
 }
+function moneyFromCents(cents) { return `$${((Number(cents) || 0) / 100).toFixed(2)}`; }
+function centsFromPrice(value) { return Math.round(parseMoney(value) * 100); }
 
 function createInvoiceId() {
   const now = new Date();
@@ -360,7 +374,7 @@ async function loadCurrentProfile() {
   currentUser = user;
   const { data: profile, error: profileError } = await ufkSupabase
     .from("profiles")
-    .select("id, display_name, email, role, revoked, created_at")
+    .select("id, display_name, email, role, revoked, store_credit_cents, created_at")
     .eq("id", user.id)
     .single();
 
@@ -386,6 +400,15 @@ function updateAccountNav() {
   accountNavButton.textContent = currentProfile
     ? `Hi, ${currentProfile.display_name || "Client"}`
     : "My Account";
+
+  if (navCreditBalance) {
+    const amount = currentProfile ? moneyFromCents(currentProfile.store_credit_cents || 0) : "$0.00";
+    const value = navCreditBalance.querySelector("strong");
+    if (value) value.textContent = amount;
+    navCreditBalance.title = currentProfile
+      ? `Your UFK store-credit balance is ${amount}`
+      : "Sign in to view and top up your UFK store-credit balance";
+  }
 }
 
 async function renderClientArea() {
@@ -405,6 +428,9 @@ async function renderClientArea() {
   await initialiseClientSupport();
   document.querySelector("#account-client-name").textContent = currentProfile.display_name || "UFK Client";
   document.querySelector("#account-client-email").textContent = currentProfile.email || currentUser.email || "";
+  if (accountCreditBalance) accountCreditBalance.textContent = moneyFromCents(currentProfile.store_credit_cents || 0);
+  updateAccountNav();
+  await loadClientTopupRequests();
 
   const { data: orders, error } = await ufkSupabase
     .from("orders")
@@ -656,6 +682,7 @@ async function renderAdminSupportInbox(profiles = window.__ufkAdminProfiles || [
     selectedAdminThreadId = safeThreads[0].id;
     await loadAdminSupportMessages();
     await renderAdminSupportInbox(profiles);
+  await renderAdminTopupRequests();
   }
 }
 
@@ -849,6 +876,72 @@ async function recordOrder({ item, price, type, status }) {
   return data;
 }
 
+
+async function loadClientTopupRequests() {
+  if (!creditTopupStatus || !currentUser) return;
+  const { data, error } = await ufkSupabase.from("credit_topup_requests")
+    .select("id, amount_cents, payment_method, status, created_at")
+    .eq("user_id", currentUser.id).order("created_at", { ascending: false }).limit(5);
+  if (error) { creditTopupStatus.textContent = "Top-up history could not be loaded."; return; }
+  creditTopupStatus.innerHTML = (data || []).length ? (data || []).map(r =>
+    `<div class="credit-request-row"><strong>${moneyFromCents(r.amount_cents)}</strong><span>${escapeAccountHtml(r.payment_method)}</span><span class="credit-status ${escapeAccountHtml(r.status.toLowerCase())}">${escapeAccountHtml(r.status)}</span></div>`
+  ).join("") : '<span>No top-up requests yet.</span>';
+}
+
+creditTopupForm?.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!await ensureSignedIn()) return;
+  const amount = Number(document.querySelector("#credit-topup-amount").value);
+  const amountCents = Math.round(amount * 100);
+  if (!Number.isFinite(amountCents) || amountCents < 100) { showToast("Enter a top-up amount of at least $1."); return; }
+  const payload = {
+    user_id: currentUser.id,
+    customer_email: currentProfile.email || currentUser.email,
+    amount_cents: amountCents,
+    payment_method: document.querySelector("#credit-topup-method").value,
+    payment_reference: document.querySelector("#credit-topup-reference").value.trim(),
+    status: "Waiting for admin approval"
+  };
+  const button = creditTopupForm.querySelector("button"); button.disabled = true;
+  const { data, error } = await ufkSupabase.from("credit_topup_requests").insert(payload).select("id").single();
+  button.disabled = false;
+  if (error) { console.error(error); showToast("Top-up request could not be sent."); return; }
+  try {
+    currentSupportThread = await getOrCreateClientThread();
+    await ufkSupabase.from("support_messages").insert({
+      thread_id: currentSupportThread.id, sender_id: currentUser.id, sender_role: "client",
+      message: `STORE CREDIT TOP-UP REQUEST\nAmount: ${moneyFromCents(amountCents)}\nMethod: ${payload.payment_method}\nReference: ${payload.payment_reference || "Not supplied"}\nStatus: Waiting for admin approval`
+    });
+  } catch (e) { console.error(e); }
+  creditTopupForm.reset(); await loadClientTopupRequests(); setSupportChatOpen(true);
+  showToast("Top-up request sent. Waiting for admin approval.");
+});
+
+async function payWithStoreCredit() {
+  if (!await ensureSignedIn()) return;
+  const priceCents = centsFromPrice(currentCheckoutItem.price);
+  if (priceCents <= 0) { showToast("This item does not have a valid store-credit price."); return; }
+  payWithCreditButton.disabled = true;
+  const { data, error } = await ufkSupabase.rpc("purchase_with_store_credit", {
+    p_item_name: currentCheckoutItem.item,
+    p_price_cents: priceCents,
+    p_price_label: currentCheckoutItem.price
+  });
+  payWithCreditButton.disabled = false;
+  if (error) {
+    console.error(error);
+    showToast(error.message?.includes("Insufficient") ? "You do not have enough store credit." : "Store-credit payment could not be completed.");
+    return;
+  }
+  const order = Array.isArray(data) ? data[0] : data;
+  creditPaymentResult.innerHTML = `<span class="payment-approved-mark">✓</span><div><strong>Paid with store credit</strong><p>Your purchase was approved instantly and added to your account.</p><a class="public-order-link" href="#order-${escapeAccountHtml(order?.id || "")}" data-close-payment>View the public approval</a></div>`;
+  creditPaymentResult.classList.remove("is-hidden"); paymentChoiceActions.classList.add("is-hidden");
+  creditPaymentResult.querySelector("[data-close-payment]")?.addEventListener("click", closePaymentModal);
+  await Promise.all([loadCurrentProfile(), renderClientArea(), loadPublicOrderLog()]);
+  showToast("Purchase paid with store credit and approved instantly.");
+}
+payWithCreditButton?.addEventListener("click", payWithStoreCredit);
+
 async function requestOtherPaymentApproval() {
   if (!await ensureSignedIn()) return null;
   const method = otherPaymentMethod?.value || "Other";
@@ -905,6 +998,7 @@ async function saveCurrentCheckout() {
 }
 
 accountNavButton.addEventListener("click", openAccountModal);
+if (navCreditBalance) navCreditBalance.addEventListener("click", openAccountModal);
 document.querySelectorAll("[data-close-account]").forEach(element => {
   element.addEventListener("click", closeAccountModal);
 });
@@ -1062,7 +1156,7 @@ async function renderAdminDashboard() {
   const [profilesResult, ordersResult] = await Promise.all([
     ufkSupabase
       .from("profiles")
-      .select("id, display_name, email, role, revoked, created_at")
+      .select("id, display_name, email, role, revoked, store_credit_cents, created_at")
       .order("created_at", { ascending: false }),
     ufkSupabase
       .from("orders")
@@ -1136,6 +1230,7 @@ async function renderAdminDashboard() {
               <span>${clientOrders.length} order${clientOrders.length === 1 ? "" : "s"}</span>
               <span>Role: ${escapeAccountHtml(client.role)}</span>
               <span>Status: ${client.revoked ? "Revoked" : "Active"}</span>
+              <span>Credit: ${moneyFromCents(client.store_credit_cents || 0)}</span>
             </div>
           </div>
           <div class="admin-client-actions">
@@ -1151,6 +1246,10 @@ async function renderAdminDashboard() {
           <summary>View order history</summary>
           ${orderHtml}
         </details>
+        <form class="admin-credit-adjust" data-user-id="${escapeAccountHtml(client.id)}">
+          <h4>Adjust store credit</h4>
+          <div class="manual-order-grid"><input name="amount" type="number" step="0.01" required placeholder="Amount, e.g. 10 or -5"><input name="note" required placeholder="Reason / payment reference"><button class="button secondary" type="submit">Update balance</button></div>
+        </form>
         <form class="admin-manual-order" data-user-id="${escapeAccountHtml(client.id)}" data-email="${escapeAccountHtml(client.email)}">
           <h4>Add purchase manually</h4>
           <div class="manual-order-grid">
@@ -1164,6 +1263,28 @@ async function renderAdminDashboard() {
       </article>`;
   }).join("");
 }
+
+
+async function renderAdminTopupRequests() {
+  if (!adminTopupRequests || currentProfile?.role !== "admin") return;
+  const { data, error } = await ufkSupabase.from("credit_topup_requests")
+    .select("id, user_id, customer_email, amount_cents, payment_method, payment_reference, status, created_at")
+    .order("created_at", { ascending: false }).limit(50);
+  if (error) { console.error(error); adminTopupRequests.innerHTML = '<div class="support-empty">Top-up requests unavailable.</div>'; return; }
+  adminTopupRequests.innerHTML = (data || []).length ? (data || []).map(r => `<article class="admin-topup-card">
+    <div><strong>${escapeAccountHtml(r.customer_email)}</strong><p>${moneyFromCents(r.amount_cents)} via ${escapeAccountHtml(r.payment_method)} · ${escapeAccountHtml(r.payment_reference || "No reference")}</p><small>${new Date(r.created_at).toLocaleString("en-GB")}</small></div>
+    <div><span class="credit-status">${escapeAccountHtml(r.status)}</span>${r.status === "Waiting for admin approval" ? `<button class="button primary admin-approve-topup" type="button" data-request-id="${r.id}" data-user-id="${r.user_id}" data-amount="${r.amount_cents}">Approve credit</button>` : ""}</div>
+  </article>`).join("") : '<div class="support-empty">No top-up requests.</div>';
+}
+
+adminTopupRequests?.addEventListener("click", async event => {
+  const button = event.target.closest(".admin-approve-topup"); if (!button) return;
+  button.disabled = true;
+  const { error } = await ufkSupabase.rpc("approve_credit_topup", { p_request_id: button.dataset.requestId });
+  if (error) { console.error(error); button.disabled = false; showToast("Top-up could not be approved."); return; }
+  try { await sendSupportMessageForUser(button.dataset.userId, "admin", `Your store-credit top-up of ${moneyFromCents(button.dataset.amount)} has been approved and added to your account balance.`); } catch(e) { console.error(e); }
+  await renderAdminDashboard(); showToast("Store credit approved and added.");
+});
 
 adminNavButton.addEventListener("click", openAdminArea);
 
@@ -1285,6 +1406,18 @@ adminClients.addEventListener("click", async event => {
 
 
 adminClients.addEventListener("submit", async event => {
+  const creditForm = event.target.closest(".admin-credit-adjust");
+  if (creditForm) {
+    event.preventDefault();
+    const fields = new FormData(creditForm);
+    const amountCents = Math.round(Number(fields.get("amount")) * 100);
+    if (!Number.isFinite(amountCents) || amountCents === 0) { showToast("Enter a valid credit adjustment."); return; }
+    const submit = creditForm.querySelector('button[type="submit"]'); submit.disabled = true;
+    const { error } = await ufkSupabase.rpc("admin_adjust_store_credit", { p_user_id: creditForm.dataset.userId, p_amount_cents: amountCents, p_note: String(fields.get("note") || "Admin adjustment") });
+    submit.disabled = false;
+    if (error) { console.error(error); showToast("Balance could not be updated."); return; }
+    creditForm.reset(); await renderAdminDashboard(); showToast("Store-credit balance updated."); return;
+  }
   const form = event.target.closest(".admin-manual-order");
   if (!form) return;
   event.preventDefault();

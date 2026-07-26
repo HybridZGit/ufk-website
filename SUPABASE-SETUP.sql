@@ -247,3 +247,90 @@ end $$;
 -- Keep your existing admin role. To promote an account manually, run:
 -- update public.profiles set role = 'admin', revoked = false
 -- where lower(email) = lower('admin@undisputedfightkit.com');
+
+
+-- STORE CREDIT UPGRADE
+alter table public.profiles add column if not exists store_credit_cents bigint not null default 0 check (store_credit_cents >= 0);
+
+create table if not exists public.credit_transactions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  amount_cents bigint not null,
+  balance_after_cents bigint not null,
+  transaction_type text not null,
+  note text,
+  order_id uuid references public.orders(id) on delete set null,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.credit_topup_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  customer_email text not null,
+  amount_cents bigint not null check (amount_cents > 0),
+  payment_method text not null,
+  payment_reference text,
+  status text not null default 'Waiting for admin approval',
+  approved_by uuid references auth.users(id) on delete set null,
+  approved_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+alter table public.credit_transactions enable row level security;
+alter table public.credit_topup_requests enable row level security;
+
+drop policy if exists "credit transactions own or admin" on public.credit_transactions;
+create policy "credit transactions own or admin" on public.credit_transactions for select using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "topups own or admin select" on public.credit_topup_requests;
+create policy "topups own or admin select" on public.credit_topup_requests for select using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "clients create own topups" on public.credit_topup_requests;
+create policy "clients create own topups" on public.credit_topup_requests for insert with check (user_id = auth.uid() and public.current_account_active());
+drop policy if exists "admins update topups" on public.credit_topup_requests;
+create policy "admins update topups" on public.credit_topup_requests for update using (public.is_admin()) with check (public.is_admin());
+
+create or replace function public.purchase_with_store_credit(p_item_name text, p_price_cents bigint, p_price_label text)
+returns setof public.orders
+language plpgsql security definer set search_path = public
+as $$
+declare v_uid uuid := auth.uid(); v_email text; v_balance bigint; v_order public.orders;
+begin
+  if v_uid is null or p_price_cents <= 0 then raise exception 'Invalid purchase'; end if;
+  select email, store_credit_cents into v_email, v_balance from public.profiles where id=v_uid and revoked=false for update;
+  if not found then raise exception 'Account unavailable'; end if;
+  if v_balance < p_price_cents then raise exception 'Insufficient store credit'; end if;
+  update public.profiles set store_credit_cents=store_credit_cents-p_price_cents where id=v_uid returning store_credit_cents into v_balance;
+  insert into public.orders(invoice_id,user_id,customer_email,item_name,price,order_type,status,payment_method,source,public_log,approved_at,admin_note)
+  values ('UFK-'||to_char(now(),'YYYYMMDD')||'-'||upper(substr(replace(gen_random_uuid()::text,'-',''),1,6)),v_uid,v_email,p_item_name,p_price_label,'paid','Admin approved','Store credit','store_credit',true,now(),'Automatically approved using store credit') returning * into v_order;
+  insert into public.credit_transactions(user_id,amount_cents,balance_after_cents,transaction_type,note,order_id,created_by)
+  values(v_uid,-p_price_cents,v_balance,'purchase','Store-credit purchase: '||p_item_name,v_order.id,v_uid);
+  return next v_order;
+end $$;
+
+create or replace function public.admin_adjust_store_credit(p_user_id uuid,p_amount_cents bigint,p_note text)
+returns bigint language plpgsql security definer set search_path=public as $$
+declare v_balance bigint;
+begin
+  if not public.is_admin() then raise exception 'Admin access required'; end if;
+  update public.profiles set store_credit_cents=store_credit_cents+p_amount_cents where id=p_user_id and store_credit_cents+p_amount_cents>=0 returning store_credit_cents into v_balance;
+  if not found then raise exception 'Invalid adjustment or insufficient balance'; end if;
+  insert into public.credit_transactions(user_id,amount_cents,balance_after_cents,transaction_type,note,created_by) values(p_user_id,p_amount_cents,v_balance,'admin_adjustment',p_note,auth.uid());
+  return v_balance;
+end $$;
+
+create or replace function public.approve_credit_topup(p_request_id uuid)
+returns bigint language plpgsql security definer set search_path=public as $$
+declare r public.credit_topup_requests; v_balance bigint;
+begin
+  if not public.is_admin() then raise exception 'Admin access required'; end if;
+  select * into r from public.credit_topup_requests where id=p_request_id for update;
+  if not found or r.status <> 'Waiting for admin approval' then raise exception 'Request is not pending'; end if;
+  update public.profiles set store_credit_cents=store_credit_cents+r.amount_cents where id=r.user_id returning store_credit_cents into v_balance;
+  update public.credit_topup_requests set status='Approved',approved_by=auth.uid(),approved_at=now() where id=p_request_id;
+  insert into public.credit_transactions(user_id,amount_cents,balance_after_cents,transaction_type,note,created_by) values(r.user_id,r.amount_cents,v_balance,'topup',coalesce(r.payment_method,'Other')||' top-up: '||coalesce(r.payment_reference,'No reference'),auth.uid());
+  return v_balance;
+end $$;
+
+grant execute on function public.purchase_with_store_credit(text,bigint,text) to authenticated;
+grant execute on function public.admin_adjust_store_credit(uuid,bigint,text) to authenticated;
+grant execute on function public.approve_credit_topup(uuid) to authenticated;
