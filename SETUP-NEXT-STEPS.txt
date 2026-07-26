@@ -1,0 +1,28 @@
+UFK SUPABASE FINAL SETUP
+
+Your website has already been connected to:
+https://hxfsrsjjmicbjptzvocj.supabase.co
+
+1. Open your Supabase project.
+2. Go to SQL Editor.
+3. Open SUPABASE-SETUP.sql from this ZIP.
+4. Paste the whole file into SQL Editor and press Run.
+5. In Authentication > Providers > Email, make sure Email is enabled.
+6. Upload the website to GitHub Pages.
+7. Register your own account through the UFK website.
+8. Return to SQL Editor and run:
+
+   update public.profiles
+   set role = 'admin'
+   where email = 'YOUR-REAL-EMAIL@example.com';
+
+9. Replace the email above with the exact email you registered.
+10. Log out of the UFK website, then use the Admin button with that same email and password.
+
+After this, accounts and orders from all visitors are stored centrally and will appear in your admin dashboard from any device.
+
+IMPORTANT:
+- Never put a Supabase secret key or service-role key in the website.
+- The publishable key included in the website is intended for browser use.
+- Discord webhook URLs are currently present in browser JavaScript. For stronger security and reliability, move them into a Supabase Edge Function later.
+- Stripe orders are currently recorded when checkout opens. A Stripe webhook is needed to confirm successful payment automatically.

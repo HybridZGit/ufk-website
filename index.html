@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="UFK — Undisputed Fight Kit. Browse premium custom kits and robes and order through Discord.">
+  <meta name="theme-color" content="#070504">
+  <title>UFK — Undisputed Fight Kit</title>
+  <link rel="icon" href="assets/images/ufk-brand-background.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="gold-particles" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="UFK home">
+      <img src="assets/images/ufk-brand-background.png" alt="UFK Undisputed Fight Kit">
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#support-fight">Support The Fight</a>
+      <a href="#kits">Kits</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#in-action">In Action</a>
+      <a href="#robes">Robes</a>
+      <a href="#posters">Posters</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#how">How it works</a>
+      <button class="nav-account" id="account-nav-button" type="button">My Account</button>
+      <button class="nav-admin" id="admin-nav-button" type="button">Admin</button>
+      <a class="nav-pay js-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Pay Now</a>
+      <a class="nav-discord js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">UFK • CUSTOM CONTENT FOR UNDISPUTED</span>
+        <h1>Fight kits built<br><em>to stand out.</em></h1>
+        <p>Premium Undisputed fight kits and robes made by UFK. View the latest releases and join our Discord to purchase.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#kits">View latest kit</a>
+          <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join our Discord</a>
+        </div>
+      </div>
+      <div class="hero-brand-card" aria-hidden="true">
+        <img src="assets/images/ufk-brand-background.png" alt="">
+      </div>
+    </section>
+
+    <section class="brand-strip" aria-label="UFK branding">
+      <span>UNDISPUTED FIGHT KIT</span>
+      <img src="assets/images/ufk-brand-background.png" alt="">
+      <span>PREMIUM CUSTOM CONTENT</span>
+    </section>
+
+
+    <section class="fight-event" id="support-fight">
+      <div class="fight-event-light fight-light-left" aria-hidden="true"></div>
+      <div class="fight-event-light fight-light-right" aria-hidden="true"></div>
+
+      <div class="fight-event-heading">
+        <span class="fight-live-badge"><i></i> UFK COMMUNITY SUPERFIGHT</span>
+        <span class="eyebrow">SUPPORT OUR FIGHT</span>
+        <h2>Canelo <strong>vs</strong> Canelo</h2>
+        <p class="fight-event-subtitle">Same power. Same pressure. Only one Canelo leaves undisputed.</p>
+      </div>
+
+      <div class="fight-event-layout">
+        <div class="fight-card">
+          <div class="fight-card-topline">
+            <span>THE MIRROR MATCH</span>
+            <span>COMMUNITY MAIN EVENT</span>
+          </div>
+
+          <div class="fight-versus">
+            <div class="fight-corner">
+              <span class="fight-corner-label">RED CORNER</span>
+              <strong>CANELO</strong>
+            </div>
+            <div class="fight-vs-mark">
+              <span>VS</span>
+            </div>
+            <div class="fight-corner">
+              <span class="fight-corner-label">BLUE CORNER</span>
+              <strong>CANELO</strong>
+            </div>
+          </div>
+
+          <div class="fight-card-copy">
+            <p>Two versions of boxing's biggest star collide in a battle built on timing, pressure, power, and pride. This is more than a match—it is a community showcase made to feel like a true fight-night main event.</p>
+          </div>
+
+          <div class="fight-stakes">
+            <div><span>EVENT</span><strong>Canelo vs Canelo</strong></div>
+            <div><span>FORMAT</span><strong>Community Superfight</strong></div>
+            <div><span>SUPPORT</span><strong>Matcherino</strong></div>
+          </div>
+
+          <div class="fight-buttons">
+            <a class="button primary fight-support-button" href="https://matcherino.com/tournaments/215077/overview" target="_blank" rel="noopener">Support The Fight</a>
+            <a class="button secondary" href="https://www.youtube.com/watch?v=-oE7_NFlWf0" target="_blank" rel="noopener">Watch on YouTube</a>
+          </div>
+          <p class="fight-support-note">Every contribution helps strengthen the event and makes fight night bigger for the entire community.</p>
+        </div>
+
+        <div class="fight-trailer-card">
+          <div class="fight-trailer-header">
+            <span>OFFICIAL FIGHT TRAILER</span>
+            <span class="fight-premiere">CANELO × CANELO</span>
+          </div>
+          <div class="fight-video">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/-oE7_NFlWf0?rel=0"
+              title="Canelo vs Canelo official fight trailer"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="fight-trailer-footer">
+            <span>POWER</span>
+            <i></i>
+            <span>PRESSURE</span>
+            <i></i>
+            <span>PRIDE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fight-final-call">
+        <span class="eyebrow">BE PART OF FIGHT NIGHT</span>
+        <h3>Help turn Canelo vs Canelo into a community event nobody forgets.</h3>
+        <a class="button primary" href="https://matcherino.com/tournaments/215077/overview" target="_blank" rel="noopener">Back The Main Event</a>
+      </div>
+    </section>
+
+    <section class="section" id="kits">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">PREMIUM UFK KITS</span>
+          <h2>Latest fight kits</h2>
+        </div>
+        <div class="price-block"><span>PRICE</span><strong>$10</strong></div>
+      </div>
+
+      <div class="kits-stack">
+        
+        <article class="featured-kit ufk-exclusive-free">
+          <div class="featured-main free-kit-preview">
+            <img class="free-kit-main" src="assets/images/usyk-vs-witherspoon-kit.png" alt="Usyk vs Witherspoon UFK Exclusive kit">
+            <img class="free-kit-reference" src="assets/images/usyk-vs-witherspoon-reference.png" alt="Usyk vs Witherspoon fight reference">
+            <span class="image-label">KIT + FIGHT REFERENCE</span>
+            <span class="free-ribbon">FREE DOWNLOAD</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">UFK EXCLUSIVE</span>
+            <h3>Usyk vs Witherspoon Kit</h3>
+            <p>A white-and-green Usyk fight kit inspired by the Witherspoon bout, released as a free UFK Exclusive for the community.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>Free</strong></div>
+            </div>
+            <a class="button primary download-exclusive" href="assets/downloads/usyk-vs-witherspoon-ufk-exclusive.rar" download data-item="Usyk vs Witherspoon UFK Exclusive" data-price="FREE">Download UFK Exclusive</a>
+            <p class="purchase-note">Free direct download. Join our Discord for support, updates, and more UFK releases.</p>
+            <a class="button secondary js-discord free-discord-link" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+          </div>
+        </article>
+<article class="featured-kit">
+          <div class="featured-main">
+            <img src="assets/images/camacho-kit-front.png" alt="Camacho Kit vs Leonard front view">
+            <span class="image-label">FRONT VIEW</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">PREMIUM UFK KIT</span>
+            <h3>Camacho Kit vs Leonard</h3>
+            <p>A clean white-and-silver Camacho-inspired kit made for the Leonard matchup, featuring custom trunks, gloves, wraps, and sparkling boots.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>$10</strong></div>
+            </div>
+            <button class="button primary pay-item" data-item="Camacho Kit vs Leonard" data-price="$10" type="button">Pay $10 with Stripe</button>
+            <p class="purchase-note">After payment, join our Discord and open a ticket with your Stripe receipt and the item name.</p>
+          </div>
+        </article>
+
+        <article class="featured-kit featured-kit-reverse">
+          <div class="featured-main kit-preview-pair">
+            <img class="primary-preview" src="assets/images/usyk-vs-rico-front.png" alt="Usyk vs Rico Kit front view">
+            <img class="secondary-preview" src="assets/images/usyk-vs-rico-side.png" alt="Usyk vs Rico Kit side view">
+            <span class="image-label">FRONT + SIDE VIEW</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">NEW PREMIUM UFK KIT</span>
+            <h3>Usyk vs Rico Kit</h3>
+            <p>A white, black, and gold Usyk-inspired fight kit created for the Rico matchup, complete with detailed trunks, matching gloves, and custom side graphics.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>$10</strong></div>
+            </div>
+            <button class="button primary pay-item" data-item="Usyk vs Rico Kit" data-price="$10" type="button">Pay $10 with Stripe</button>
+            <p class="purchase-note">After payment, join our Discord and open a ticket with your Stripe receipt and the item name.</p>
+          </div>
+        </article>
+      
+        <article class="featured-kit">
+          <div class="featured-main hector-preview">
+            <img src="assets/images/hector-kit-front.png" alt="Hector Kit front view">
+            <span class="image-label">FRONT VIEW</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">NEW PREMIUM UFK KIT</span>
+            <h3>Hector Kit</h3>
+            <p>A bold leopard-print Hector fight kit featuring high-cut trunks and matching black gloves for a distinctive in-game look.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>$10</strong></div>
+            </div>
+            <button class="button primary pay-item" data-item="Hector Kit" data-price="$10" type="button">Pay $10 with Stripe</button>
+            <p class="purchase-note">After payment, join our Discord and open a ticket with your Stripe receipt and the item name.</p>
+          </div>
+        </article>
+
+        <article class="featured-kit featured-kit-reverse">
+          <div class="featured-main crawford-preview-grid">
+            <img class="crawford-front" src="assets/images/crawford-kit-front.png" alt="Crawford Kit front view">
+            <img class="crawford-back" src="assets/images/crawford-kit-back.png" alt="Crawford Kit back view">
+            <img class="crawford-robe" src="assets/images/crawford-kit-robe.png" alt="Crawford Kit robe view">
+            <span class="image-label">FRONT + BACK + ROBE</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">NEW PREMIUM UFK KIT</span>
+            <h3>Crawford Kit</h3>
+            <p>A black, white, red, and gold Terence Crawford-inspired set featuring custom trunks, matching gloves, bold flame graphics, and a coordinated entrance robe.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>$10</strong></div>
+            </div>
+            <button class="button primary pay-item" data-item="Crawford Kit" data-price="$10" type="button">Pay $10 with Stripe</button>
+            <p class="purchase-note">After payment, join our Discord and open a ticket with your Stripe receipt and the item name.</p>
+          </div>
+        </article>
+
+        <article class="featured-kit sugar-ray-kit">
+          <div class="featured-main sugar-ray-preview-grid">
+            <img class="sr-front" src="assets/images/sugar-ray-leonard-front.png" alt="Sugar Ray Leonard Playboy x True Religion kit front view">
+            <img class="sr-back" src="assets/images/sugar-ray-leonard-back.png" alt="Sugar Ray Leonard Playboy x True Religion kit back view">
+            <img class="sr-side" src="assets/images/sugar-ray-leonard-side.png" alt="Sugar Ray Leonard Playboy x True Religion kit side view">
+            <img class="sr-boots" src="assets/images/sugar-ray-leonard-boots.png" alt="Sugar Ray Leonard Playboy x True Religion kit boots">
+            <span class="image-label">FRONT + BACK + SIDE + BOOTS</span>
+          </div>
+          <div class="featured-info">
+            <span class="kit-tag">PREMIUM UFK KIT</span>
+            <h3>Sugar Ray Leonard Playboy x True Religion Kit</h3>
+            <p>A premium black, red, gold, and white Sugar Ray Leonard-inspired set featuring Playboy and True Religion styling, custom gloves, detailed trunks, and matching tasselled boots.</p>
+            <div class="kit-details">
+              <div><span>GAME</span><strong>Undisputed</strong></div>
+              <div><span>TYPE</span><strong>Full Fight Kit</strong></div>
+              <div><span>PRICE</span><strong>$25</strong></div>
+            </div>
+            <button class="button primary pay-item" data-item="Sugar Ray Leonard Playboy x True Religion Kit" data-price="$25" type="button">Pay $25 with Stripe</button>
+            <p class="purchase-note">After payment, join our Discord and open a ticket with your Stripe receipt and the item name.</p>
+          </div>
+        </article>
+</div>
+    </section>
+
+    <section class="section gallery-section" id="gallery">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">IN-GAME PREVIEWS</span>
+          <h2>See every detail</h2>
+        </div>
+      </div>
+      <div class="gallery">
+        <figure><img src="assets/images/camacho-kit-side.png" alt="Camacho Kit side view"><figcaption>Side profile</figcaption></figure>
+        <figure><img src="assets/images/camacho-kit-boots.png" alt="Camacho Kit sparkling boots"><figcaption>Custom sparkling boots</figcaption></figure>
+        <figure><img src="assets/images/camacho-kit-front.png" alt="Camacho Kit front view"><figcaption>Full front view</figcaption></figure>
+      </div>
+    </section>
+
+
+    <section class="section action-section" id="in-action">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">REAL IN-GAME FOOTAGE</span>
+          <h2>See our kits in action</h2>
+          <p class="section-intro">Watch real gameplay clips and get a proper feel for how UFK kits look inside Undisputed before you buy.</p>
+        </div>
+      </div>
+
+      <div class="featured-video-card">
+        <div class="video-frame video-frame-featured">
+          <video id="featured-gameplay" controls muted playsinline preload="metadata" poster="assets/images/ufk-brand-background.png">
+            <source src="assets/videos/ufk-gameplay-1.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+          <span class="video-badge">FEATURED GAMEPLAY</span>
+        </div>
+        <div class="featured-video-copy">
+          <span class="kit-tag">UFK IN GAME</span>
+          <h3>Real gameplay. Real kit detail.</h3>
+          <p>See the fabrics, colours, gloves, trunks, robes, and movement exactly as they appear during gameplay.</p>
+          <a class="button primary" href="#kits">Browse the kits</a>
+        </div>
+      </div>
+
+      <div class="video-grid">
+        <article class="video-card">
+          <div class="video-frame">
+            <video controls muted playsinline preload="metadata">
+              <source src="assets/videos/ufk-gameplay-1.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-body">
+            <span>GAMEPLAY CLIP 01</span>
+            <h3>Ring Walk &amp; Fight Detail</h3>
+            <p>See how the kit looks under arena lighting and during movement.</p>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <div class="video-frame">
+            <video controls muted playsinline preload="metadata">
+              <source src="assets/videos/ufk-gameplay-2.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-body">
+            <span>GAMEPLAY CLIP 02</span>
+            <h3>Full In-Game Presentation</h3>
+            <p>Preview the full outfit and how it fits the fighter model.</p>
+          </div>
+        </article>
+
+        <article class="video-card">
+          <div class="video-frame">
+            <video controls muted playsinline preload="metadata">
+              <source src="assets/videos/ufk-gameplay-3.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-body">
+            <span>GAMEPLAY CLIP 03</span>
+            <h3>Fight Action Preview</h3>
+            <p>Watch the kit during live exchanges so you can see it in motion.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="action-cta">
+        <div>
+          <span class="eyebrow">LIKE WHAT YOU SEE?</span>
+          <h3>Pick a kit, pay securely, then open a Discord ticket.</h3>
+        </div>
+        <div class="action-cta-buttons">
+          <a class="button primary" href="#kits">View Kits</a>
+          <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section robes-section" id="robes">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">UFK ROBE COLLECTION</span>
+          <h2>Premium robes</h2>
+        </div>
+        <div class="price-block"><span>EACH</span><strong>$5</strong></div>
+      </div>
+
+      <div class="robe-grid">
+        <article class="robe-card">
+          <div class="robe-image"><img src="assets/images/robe-canelo-pink.png" alt="Pink Canelo robe"></div>
+          <div class="robe-body"><span>ROBE 01</span><h3>Pink Canelo Robe</h3><strong>$5</strong><button class="button primary pay-item" data-item="Pink Canelo Robe" type="button" data-price="$5">Pay $5 with Stripe</button></div>
+        </article>
+        <article class="robe-card">
+          <div class="robe-image"><img src="assets/images/robe-canelo-black-gold.png" alt="Black and gold Canelo robe"></div>
+          <div class="robe-body"><span>ROBE 02</span><h3>Black &amp; Gold Canelo Robe</h3><strong>$5</strong><button class="button primary pay-item" data-item="Black and Gold Canelo Robe" type="button" data-price="$5">Pay $5 with Stripe</button></div>
+        </article>
+        <article class="robe-card">
+          <div class="robe-image"><img src="assets/images/robe-canelo-mexico-black.png" alt="Black Mexico Canelo robe"></div>
+          <div class="robe-body"><span>ROBE 03</span><h3>Black Mexico Robe</h3><strong>$5</strong><button class="button primary pay-item" data-item="Black Mexico Robe" type="button" data-price="$5">Pay $5 with Stripe</button></div>
+        </article>
+        <article class="robe-card">
+          <div class="robe-image"><img src="assets/images/robe-canelo-red-white.png" alt="Red and white Canelo robe"></div>
+          <div class="robe-body"><span>ROBE 04</span><h3>Red &amp; White Canelo Robe</h3><strong>$5</strong><button class="button primary pay-item" data-item="Red and White Canelo Robe" type="button" data-price="$5">Pay $5 with Stripe</button></div>
+        </article>
+        <article class="robe-card">
+          <div class="robe-image"><img src="assets/images/robe-white-black.png" alt="White and black robe"></div>
+          <div class="robe-body"><span>ROBE 05</span><h3>White &amp; Black Robe</h3><strong>$5</strong><button class="button primary pay-item" data-item="White and Black Robe" type="button" data-price="$5">Pay $5 with Stripe</button></div>
+        </article>
+      </div>
+    </section>
+
+
+
+    <section class="section posters-section" id="posters">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">UFK DESIGN STUDIO</span>
+          <h2>Poster designs</h2>
+          <p class="section-intro">Custom fight posters, event artwork, and promotional designs made in the UFK style.</p>
+        </div>
+        <div class="price-block">
+          <span>PER POSTER</span>
+          <strong>$10</strong>
+        </div>
+      </div>
+
+      <div class="poster-grid">
+        
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-ksi-vs-till.jpg" alt="KSI vs Till custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 01</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>KSI vs Till</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="KSI vs Till Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-crawford-vs-canelo.jpg" alt="Crawford vs Canelo custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 02</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>Crawford vs Canelo</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="Crawford vs Canelo Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-aspinall-vs-gane.jpg" alt="Aspinall vs Gane custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 03</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>Aspinall vs Gane</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="Aspinall vs Gane Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-barrios-vs-garcia.jpg" alt="Barrios vs Garcia custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 04</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>Barrios vs Garcia</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="Barrios vs Garcia Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-paul-vs-garcia.jpg" alt="Paul vs Garcia custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 05</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>Paul vs Garcia</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="Paul vs Garcia Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+        <article class="poster-card">
+          <div class="poster-image">
+            <img src="assets/images/poster-dexter-resurrection.jpg" alt="Dexter Resurrection custom poster design" loading="lazy">
+            <span class="poster-number">POSTER 06</span>
+          </div>
+          <div class="poster-body">
+            <span class="poster-tag">CUSTOM POSTER DESIGN</span>
+            <h3>Dexter Resurrection</h3>
+            <div class="poster-price">$10</div>
+            <button class="button primary pay-item" data-item="Dexter Resurrection Poster Design" data-price="$10" type="button">Pay $10 with Stripe</button>
+          </div>
+        </article>
+    
+      </div>
+
+      <article class="poster-bundle">
+        <div class="bundle-copy">
+          <span class="eyebrow">BEST VALUE</span>
+          <h3>10 Poster Bundle</h3>
+          <p>Order ten custom poster designs for one discounted package price.</p>
+          <ul>
+            <li>10 custom poster designs</li>
+            <li>Designed around your fighters, event, colours, and references</li>
+            <li>Delivery handled through a Discord ticket after payment</li>
+          </ul>
+        </div>
+        <div class="bundle-price">
+          <span>10 POSTERS</span>
+          <strong>$70</strong>
+          <small>Save $30</small>
+        </div>
+        <button class="button primary pay-item bundle-button" data-item="10 Poster Design Bundle" data-price="$70" type="button">Pay $70 with Stripe</button>
+      </article>
+
+      <div class="payment-warning poster-ticket-note">
+        <strong>After payment:</strong>
+        Join the UFK Discord, open a ticket, attach your Stripe receipt, and send the poster names or references you want us to use.
+      </div>
+    </section>
+
+    <section class="section reviews-section" id="reviews">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CLIENT FEEDBACK</span>
+          <h2>What players are saying</h2>
+        </div>
+      </div>
+      <div class="reviews-grid">
+        <article><span>★★★★★</span><p>“That full kit is really awesome. I really appreciate it!”</p><strong>brpark2</strong></article>
+        <article><span>★★★★★</span><p>“Go get your custom kits!”</p><strong>strive</strong></article>
+        <article><span>★★★★★</span><p>“Canelo vs Caleb Plant — fire.”</p><strong>foreverdma</strong></article>
+        <article><span>★★★★★</span><p>“Some of the best kits I’ve seen. The attention to detail and communication are excellent.”</p><strong>kingruthless09</strong></article>
+        <article><span>★★★★★</span><p>“The colours, shorts, gloves, and overall appearance are recreated beautifully. It feels authentic in-game.”</p><strong>yadim1607</strong></article>
+      </div>
+    </section>
+
+
+    <section class="section payment-section" id="payment">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">SECURE CHECKOUT</span>
+          <h2>How payment works</h2>
+        </div>
+      </div>
+      <div class="payment-flow">
+        <article><strong>01</strong><h3>Pay with Stripe</h3><p>Press the payment button on the kit or robe you want and complete checkout securely.</p></article>
+        <article><strong>02</strong><h3>Join Discord</h3><p>After paying, join the official UFK Discord server.</p></article>
+        <article><strong>03</strong><h3>Open a ticket</h3><p>Open a support ticket and send your Stripe receipt, the item name, and your Discord username.</p></article>
+        <article><strong>04</strong><h3>Receive your files</h3><p>A UFK team member will verify the payment and deliver your purchase.</p></article>
+      </div>
+      <div class="payment-warning">
+        <strong>Important:</strong>
+        Please join the Discord and open a ticket after purchase. Include your Stripe receipt or payment confirmation and tell us exactly which kit or robe you bought.
+      </div>
+      <div class="payment-actions">
+        <a class="button primary js-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Open Stripe Checkout</a>
+        <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+    </section>
+
+    <section class="section steps" id="how">
+      <span class="eyebrow">HOW TO BUY</span>
+      <h2>Pay securely, then open a ticket</h2>
+      <div class="step-grid">
+        <article><strong>01</strong><h3>Choose an item</h3><p>Pick the fight kit or robe you want from the UFK collection.</p></article>
+        <article><strong>02</strong><h3>Copy your message</h3><p>Press the payment button and complete checkout through Stripe.</p></article>
+        <article><strong>03</strong><h3>Join Discord</h3><p>After payment, open a ticket in Discord with your receipt and item name.</p></article>
+      </div>
+    </section>
+
+    <section class="cta">
+      <img src="assets/images/ufk-brand-background.png" alt="UFK Undisputed Fight Kit">
+      <div><span class="eyebrow">READY TO ORDER?</span><h2>Join the UFK Discord</h2><p>Buy kits and robes directly from the official server.</p></div>
+      <a class="button primary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+    </section>
+  </main>
+
+  <footer>
+    <img src="assets/images/ufk-brand-background.png" alt="UFK">
+    <p>UFK — Undisputed Fight Kit. Community-made content. Not affiliated with Steel City Interactive.</p>
+    <a class="js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+  </footer>
+
+
+  <aside class="review-floater" id="review-floater" aria-label="Client reviews">
+    <div class="review-glow" aria-hidden="true"></div>
+    <div class="review-topline">
+      <span class="review-kicker">CLIENT REVIEW</span>
+      <div class="review-controls">
+        <button id="review-prev" type="button" aria-label="Previous review">‹</button>
+        <button id="review-pause" type="button" aria-label="Pause reviews">Ⅱ</button>
+        <button id="review-next" type="button" aria-label="Next review">›</button>
+      </div>
+    </div>
+    <blockquote id="review-text"></blockquote>
+    <div class="review-person">
+      <span class="review-avatar" id="review-avatar">B</span>
+      <div>
+        <strong id="review-name"></strong>
+        <span id="review-source">Verified Discord client</span>
+      </div>
+    </div>
+    <div class="review-progress"><span id="review-progress-bar"></span></div>
+  </aside>
+
+
+
+  <div class="account-modal" id="account-modal" aria-hidden="true">
+    <div class="account-modal-backdrop" data-close-account></div>
+    <div class="account-modal-card" role="dialog" aria-modal="true" aria-labelledby="account-modal-title">
+      <button class="account-modal-close" type="button" data-close-account aria-label="Close">×</button>
+
+      <section class="account-auth-view" id="account-auth-view">
+        <span class="eyebrow">UFK CLIENT AREA</span>
+        <h2 id="account-modal-title">Your kits. Your history.</h2>
+        <p>Create a client login or sign in to view paid checkouts and free downloads saved on this device.</p>
+
+        <div class="account-tabs" role="tablist" aria-label="Client login options">
+          <button class="account-tab is-active" id="login-tab" type="button" role="tab" aria-selected="true">Log In</button>
+          <button class="account-tab" id="register-tab" type="button" role="tab" aria-selected="false">Create Account</button>
+        </div>
+
+        <form class="account-form" id="login-form">
+          <label>
+            Email
+            <input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <label>
+            Password
+            <input id="login-password" type="password" autocomplete="current-password" required placeholder="Enter password">
+          </label>
+          <button class="button primary" type="submit">Enter Client Area</button>
+        </form>
+
+        <form class="account-form is-hidden" id="register-form">
+          <label>
+            Display name
+            <input id="register-name" type="text" autocomplete="name" required placeholder="Your name">
+          </label>
+          <label>
+            Email
+            <input id="register-email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <label>
+            Password
+            <input id="register-password" type="password" autocomplete="new-password" minlength="4" required placeholder="Choose a password">
+          </label>
+          <button class="button primary" type="submit">Create Client Account</button>
+        </form>
+
+        <p class="account-local-note">This simple client area stores login details and order history only in this browser.</p>
+      </section>
+
+
+      <section class="admin-auth-view is-hidden" id="admin-auth-view">
+        <span class="eyebrow">UFK ADMIN AREA</span>
+        <h2>Admin login</h2>
+        <p>View all client accounts, order histories, revoke access, update orders, and attach delivered files from any device.</p>
+
+        <form class="account-form" id="admin-login-form">
+          <label>
+            Admin email
+            <input id="admin-login-email" type="email" required placeholder="admin@ufk.local">
+          </label>
+          <label>
+            Admin password
+            <input id="admin-login-password" type="password" required placeholder="Enter admin password">
+          </label>
+          <button class="button primary" type="submit">Open Admin Dashboard</button>
+          <button class="button secondary" id="admin-back-to-client" type="button">Back to Client Login</button>
+        </form>
+
+        <p class="account-local-note">Use the email and password of a Supabase account whose profile role is set to <strong>admin</strong>.</p>
+      </section>
+
+      <section class="admin-dashboard is-hidden" id="admin-dashboard">
+        <div class="account-dashboard-header">
+          <div>
+            <span class="eyebrow">UFK ADMIN AREA</span>
+            <h2>Client management</h2>
+            <p>Manage every UFK account and invoice stored in the shared Supabase database.</p>
+          </div>
+          <div class="admin-header-actions">
+            <button class="button secondary" id="admin-refresh" type="button">Refresh</button>
+            <button class="button secondary" id="admin-logout" type="button">Log Out</button>
+          </div>
+        </div>
+
+        <div class="account-summary admin-summary">
+          <article><span>TOTAL CLIENTS</span><strong id="admin-client-count">0</strong></article>
+          <article><span>TOTAL ORDERS</span><strong id="admin-order-count">0</strong></article>
+          <article><span>ORDER VALUE</span><strong id="admin-order-total">$0</strong></article>
+        </div>
+
+        <div class="admin-clients" id="admin-clients"></div>
+      </section>
+
+      <section class="account-dashboard is-hidden" id="account-dashboard">
+        <div class="account-dashboard-header">
+          <div>
+            <span class="eyebrow">UFK CLIENT AREA</span>
+            <h2>Welcome back, <span id="account-client-name">fighter</span>.</h2>
+            <p id="account-client-email"></p>
+          </div>
+          <button class="button secondary account-logout" id="account-logout" type="button">Log Out</button>
+        </div>
+
+        <div class="account-summary">
+          <article>
+            <span>ORDERS SAVED</span>
+            <strong id="account-order-count">0</strong>
+          </article>
+          <article>
+            <span>TOTAL VALUE</span>
+            <strong id="account-order-total">$0</strong>
+          </article>
+          <article>
+            <span>DELIVERY</span>
+            <strong>Via Discord</strong>
+          </article>
+        </div>
+
+        <div class="account-orders-heading">
+          <div>
+            <span class="eyebrow">PURCHASE HISTORY</span>
+            <h3>Your UFK orders</h3>
+          </div>
+          <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Open Discord</a>
+        </div>
+
+        <div class="account-orders" id="account-orders"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="payment-modal" id="payment-modal" aria-hidden="true">
+    <div class="payment-modal-backdrop" data-close-payment></div>
+    <div class="payment-modal-card" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title">
+      <button class="payment-modal-close" type="button" data-close-payment aria-label="Close">×</button>
+      <span class="eyebrow">BEFORE CHECKOUT</span>
+      <h2 id="payment-modal-title">Complete payment, then open a ticket</h2>
+      <p>You are purchasing <strong id="payment-item-name">this item</strong>.</p>
+      <ol>
+        <li>Complete payment securely through Stripe.</li>
+        <li>Join the UFK Discord server.</li>
+        <li>Open a support ticket.</li>
+        <li>Attach your Stripe receipt and include the item name.</li>
+      </ol>
+      <div class="payment-modal-actions">
+        <a class="button primary" id="continue-to-stripe" href="https://buy.stripe.com/cNi28tcsha8Q1ek5Yw8so00" target="_blank" rel="noopener">Continue to Stripe</a>
+        <a class="button secondary js-discord" href="https://discord.gg/zweuZ96QBe" target="_blank" rel="noopener">Join Discord</a>
+      </div>
+      <p class="modal-note">Delivery is handled through Discord after payment verification.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
